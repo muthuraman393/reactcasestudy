@@ -5,6 +5,10 @@ import {fetchPosts,fetchPostsIfNeeded} from "../actions";
 
 
 class HeroesList extends Component {
+  constructor(props) {
+    super(props)
+    this.handleRefreshClick = this.handleRefreshClick.bind(this)
+  }
   static getdefaultheroeslist() {
     return [
       { id: 11, name: "Mr. Nice" },
@@ -20,11 +24,18 @@ class HeroesList extends Component {
     ];
   }
 
-componentDidMount=()=>{
+/*componentDidMount=()=>{
   const { dispatch} = this.props;
   dispatch(fetchPostsIfNeeded());
-}
+}*/
 
+
+handleRefreshClick(e) {
+  e.preventDefault()
+  const { dispatch } = this.props
+  //dispatch(invalidateSubreddit())
+  fetchPosts(dispatch)
+}
   render() {
     const heoresarr = HeroesList.getdefaultheroeslist();
     const {
@@ -33,8 +44,11 @@ componentDidMount=()=>{
       heroeslist
     } = this.props;
     return (
-      <div>{heroeslist}
+      <div>--{heroeslist}--
         <h2>Heroes List Page </h2>
+        <button onClick={this.handleRefreshClick}>
+              Refresh
+            </button>
         <ul className="heroes">
           {heoresarr.map(i => {
             return (

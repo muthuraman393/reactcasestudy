@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch';
 let nextTodoId = 0;
 export const addTodo = text => ({
   type: "ADD_TODO",
@@ -31,10 +32,12 @@ export const receiveheroeslt = (json)=>({
 });
 
 
-export const fetchPosts = () => (dispatch) => {
+export const fetchPosts = (dispatch) => {
   dispatch(requestheroeslt());
   return fetch(`https://www.reddit.com/r/reactjs.json`)
-    .then(response => response.json())
+    .then(response => response.json(),
+    error => console.log('An error occurred.', error)
+  )
     .then(json => dispatch(receiveheroeslt(json)));
 };
 
@@ -46,9 +49,10 @@ const shouldFetchPosts = (state) => {
   if (posts.isFetching) {
     return false
   }
+  return true;
 }
 
-export const fetchPostsIfNeeded = () => (dispatch, getState) => {
+export const fetchPostsIfNeeded = (dispatch, getState) => {
   console.log('fetchPostsIfNeeded action function');
   if (shouldFetchPosts(getState())) {
     return dispatch(fetchPosts())
