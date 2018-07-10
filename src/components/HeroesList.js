@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import {fetchPosts,fetchPostsIfNeeded} from "../actions";
+import {fetchPosts/*,fetchPostsIfNeeded*/} from "../actions";
 
 
 class HeroesList extends Component {
@@ -24,10 +24,10 @@ class HeroesList extends Component {
     ];
   }
 
-/*componentDidMount=()=>{
-  const { dispatch} = this.props;
-  dispatch(fetchPostsIfNeeded());
-}*/
+componentDidMount=()=>{
+  const { dispatch} = this.props
+  fetchPosts(dispatch)
+}
 
 
 handleRefreshClick(e) {
@@ -41,21 +41,23 @@ handleRefreshClick(e) {
     const {
       isfetching,
       isreceivedat,
-      heroeslist
+      heroitems
     } = this.props;
+    const isempty = heroitems.length === 0
     return (
-      <div>--{heroeslist}--
-        <h2>Heroes List Page </h2>
+      <div>
+        <h2>Heroes List Page  is Last Updated at {new Date(isreceivedat).toLocaleTimeString()}.{" "}</h2>
         <button onClick={this.handleRefreshClick}>
               Refresh
             </button>
-        <ul className="heroes">
-          {heoresarr.map(i => {
+            {isempty ? (<h1>Loading</h1>):
+            (<ul className="heroes">
+          {heroitems.map(i => {
             return (
               <li key={i.id}>
                 <Link to={`/hero/${i.id}`}>
-                  <span className="badge">{i.id} </span>
-                  {i.name}
+                  <span className="badge">{i.ups} </span>
+                  {i.name} - {i.id}
                 </Link>
                 <button className="delete" title="delete hero">
                   x
@@ -63,7 +65,7 @@ handleRefreshClick(e) {
               </li>
             );
           })}
-        </ul>
+        </ul>)}
       </div>
     );
   }
@@ -73,7 +75,12 @@ const {
   isfetching,
   isreceivedat,
   heroeslist: heroitems
-} = state.herolistreducer;
+} = state.herolistreducer ||
+ {
+  isfetching:true,
+  isreceivedat:'',
+  heroeslist:[]
+};
 return{
   isfetching,
   isreceivedat,

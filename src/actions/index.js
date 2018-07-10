@@ -40,8 +40,8 @@ export const fetchPosts = (dispatch) => {
   )
     .then(json => dispatch(receiveheroeslt(json)));
 };
-
-const shouldFetchPosts = (state) => {
+//not used methods
+/*const shouldFetchPosts = (state) => {
   const posts = state.herolistreducer;
   if (!posts) {
     return true
@@ -49,7 +49,7 @@ const shouldFetchPosts = (state) => {
   if (posts.isFetching) {
     return false
   }
-  return true;
+  return false;
 }
 
 export const fetchPostsIfNeeded = (dispatch, getState) => {
@@ -57,4 +57,4 @@ export const fetchPostsIfNeeded = (dispatch, getState) => {
   if (shouldFetchPosts(getState())) {
     return dispatch(fetchPosts())
   }
-}
+}*/
